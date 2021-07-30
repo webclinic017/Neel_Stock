@@ -1,0 +1,78 @@
+{% extends 'auth_base.html' %}
+{% load  static %}
+{% block content %}
+    <section class="flexbox-container">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="col-lg-4 col-md-6 col-10 box-shadow-2 p-0">
+                <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
+                    <div class="card-header border-0">
+                        <div class="text-center mb-1">
+                            <img src="app-assets/images/logo/logo.png" alt="branding logo">
+                        </div>
+                        <div class="font-large-1  text-center">
+                            Become A Member
+                        </div>
+                    </div>
+                    <div class="card-content">
+
+                        <div class="card-body">
+                            <form class="form-horizontal" method="post">
+                                {% csrf_token %}
+                                {% include 'accounts/error_file.html' %}
+                                <fieldset class="form-group position-relative has-icon-left">
+                                    <input type="text" class="form-control round" id="user-name"
+                                           name="username" placeholder="Choose Username" required>
+                                    <div class="form-control-position">
+                                        <i class="ft-user"></i>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group position-relative has-icon-left">
+                                    <input type="email" class="form-control round" id="user-email"
+                                           name="email" placeholder="Your Email Address" required>
+                                    <div class="form-control-position">
+                                        <i class="ft-mail"></i>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group position-relative has-icon-left">
+                                    <input type="tel" class="form-control round" id="phonenumber"
+                                           name="phonenumber" placeholder="+91 111 1234567" required>
+                                    <div class="form-control-position">
+                                        <i class="ft-phone"></i>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group position-relative has-icon-left">
+                                    <input type="password" class="form-control round" id="user-password"
+                                           name="password1" placeholder="Enter Password" required>
+                                    <div class="form-control-position">
+                                        <i class="ft-lock"></i>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group position-relative has-icon-left">
+                                    <input type="password" class="form-control round" id="user-password"
+                                           name="password2" placeholder="Confirm Password" required>
+                                    <div class="form-control-position">
+                                        <i class="ft-lock"></i>
+                                    </div>
+                                </fieldset>
+
+                                <div class="form-group text-center">
+                                    <button type="submit"
+                                            class="btn round btn-block btn-glow btn-bg-gradient-x-purple-blue col-12 mr-1 mb-1">
+                                        Register
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                        <p class="card-subtitle text-muted text-right font-small-3 mx-2 my-1">
+                            <span>Already a member ?
+                                <a href="{% url 'accounts:login' %}" class="card-link">Sign In</a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
