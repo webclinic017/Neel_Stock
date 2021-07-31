@@ -51,7 +51,7 @@
                                         <div class="card-content collapse show">
                                             <div class="card-body card-dashboard">
                                                 <div class="table-responsive">
-                                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal-vertical" id="custom">
+                                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal-vertical height-1">
                                                         <thead>
                                                         <tr>
                                                             <th>First name</th>
@@ -1218,16 +1218,21 @@
 
 
     <!-- END: Content-->
+
+
+{% endblock %}
+
+{% block extrajs %}
     <script>
 
         $(document).ready(function () {
-            $('#custom').DataTable({          // getting table by table id
+            $('.height-1').DataTable({          // getting table by table id
                 iDisplayLength: 50,
                 searching: false,
                 bLengthChange: false,
+                scrollX: true,
             });
         });
 
     </script>
-
 {% endblock %}

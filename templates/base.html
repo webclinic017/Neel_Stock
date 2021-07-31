@@ -156,6 +156,8 @@
     <script src="{% static 'app-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
     <!-- BEGIN Vendor JS-->
   <!-- BEGIN: Page Vendor JS-->
+    {% block extrajs %}
+    {% endblock %}
     <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.min.js' %}" type="text/javascript"></script>
     <!-- END: Page Vendor JS-->
     <!-- BEGIN: Page Vendor JS-->
