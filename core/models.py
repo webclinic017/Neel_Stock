@@ -80,3 +80,19 @@ class Bucket(models.Model):
     class Meta:
         verbose_name = 'Bucket'
         verbose_name_plural = 'Buckets'
+
+
+class WatchList(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    Stock = models.CharField(max_length=200)
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, editable=False, blank=True)
+
+    def __str__(self):
+        return f'{self.User} {self.Stock}'
+
+    class Meta:
+        verbose_name = 'WatchList'
+        verbose_name_plural = 'WatchLists'

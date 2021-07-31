@@ -91,41 +91,14 @@
         <div class="navigation-background"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a href="index.html"><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span><span class="badge badge badge-info badge-pill float-right mr-2">3</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="dashboard-ecommerce.html">eCommerce</a>
-                        </li>
-                        <li class="active"><a class="menu-item" href="dashboard-analytics.html">Analytics</a>
-                        </li>
-                    </ul>
+                <li class=" nav-item"><a href="index.html"><i class="ft-home"></i><span class="menu-title" data-i18n="">Home</span></a>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="ft-layers"></i><span class="menu-title" data-i18n="">Apps</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="email-application.html">Email Application</a>
-                        </li>
-                        <li><a class="menu-item" href="chat-application.html">Chat Application</a>
-                        </li>
-                        <li><a class="menu-item" href="full-calender.html">Full Calendar</a>
-                        </li>
-                        <li><a class="menu-item" href="project-summary.html">Project Summary</a>
-                        </li>
-                        <li><a class="menu-item" href="invoice-template.html">Invoice</a>
-                        </li>
-                        <li><a class="menu-item" href="#">Timelines</a>
-                            <ul class="menu-content">
-                                <li><a class="menu-item" href="timeline-center.html">Timelines Center</a>
-                                </li>
-                                <li><a class="menu-item" href="timeline-horizontal.html">Timelines Horizontal</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a class="menu-item" href="user-profile.html">Users Profile</a>
-                        </li>
-                        <li><a class="menu-item" href="users-contacts.html">Contact List</a>
-                        </li>
-                    </ul>
+                <li class=" nav-item"><a href="#"><i class="ft-layers"></i><span class="menu-title" data-i18n="">Watch Lists</span></a>
                 </li>
-
+                <li class=" nav-item"><a href="{% url 'core:user_lists' %}"><i class="ft-layers"></i><span class="menu-title" data-i18n="">User Lists</span></a>
+                </li>
+                <li class=" nav-item"><a href="#"><i class="ft-layers"></i><span class="menu-title" data-i18n="">User Buckets</span></a>
+                </li>
             </ul>
         </div>
     </div>
@@ -156,10 +129,12 @@
     <script src="{% static 'app-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
     <!-- BEGIN Vendor JS-->
   <!-- BEGIN: Page Vendor JS-->
-    {% block extrajs %}
-    {% endblock %}
+
     <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.min.js' %}" type="text/javascript"></script>
     <!-- END: Page Vendor JS-->
+    {% block extrajs %}
+    {% endblock %}
+
     <!-- BEGIN: Page Vendor JS-->
     <script src="{% static 'app-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js' %}" type="text/javascript"></script>

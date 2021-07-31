@@ -4,4 +4,4 @@ from .models import *
 admin.site.register(Transaction)
 admin.site.register(UserList)
 admin.site.register(Bucket)
-
+admin.site.register(WatchList)
