@@ -13,7 +13,7 @@
             <div class="content-body">
                 <!-- Revenue, Hit Rate & Deals -->
                 <div class="row">
-                    <div class="col-lg-8 col-md-12">
+                    <div class="col-lg-6 col-md-6">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Project Revenue</h4>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-lg-6 col-md-6">
                         <!-- Scroll - horizontal and vertical table -->
                         <section id="horizontal-vertical">
                             <div class="row">
@@ -50,8 +50,8 @@
                                         </div>
                                         <div class="card-content collapse show">
                                             <div class="card-body card-dashboard">
-                                               <div class="table-responsive">
-                                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal-vertical">
+                                                <div class="table-responsive">
+                                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal-vertical" id="custom">
                                                         <thead>
                                                         <tr>
                                                             <th>First name</th>
@@ -1218,6 +1218,16 @@
 
 
     <!-- END: Content-->
+    <script>
 
+        $(document).ready(function () {
+            $('#custom').DataTable({          // getting table by table id
+                iDisplayLength: 50,
+                searching: false,
+                bLengthChange: false,
+            });
+        });
+
+    </script>
 
 {% endblock %}
