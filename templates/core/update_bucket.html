@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="app-content content">
+        <div class="content-wrapper">
+
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Edit</h4>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form method="post" class="form">
+                                        {% csrf_token %}
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="ft-list"></i> Edit Bucket</h4>
+                                            {{ form }}
+                                        </div>
+                                        <div class="form-actions">
+                                            <input type="submit" value="Save" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

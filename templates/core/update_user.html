@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="app-content content">
+        <div class="content-wrapper">
+
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Edit</h4>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <form method="post" class="form">
+                                        {% csrf_token %}
+                                        <div class="form-body">
+                                            <h4 class="form-section">
+                                                <i class="ft-user-check"></i> Edit User</h4>
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                {{ form.Name }}
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        {{ form.Email }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="phone">Phone</label>
+                                                        {{ form.Phone }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        {{ form.Password }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="userid">User ID</label>
+                                                        {{ form.UserId }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="id_Broker">Broker</label>
+                                                        {{ form.Broker }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="id_Pin_2FA">PIN/2FA</label>
+                                                        {{ form.Pin_2FA }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="id_API_Key">API Key</label>
+                                                        {{ form.API_Key }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="id_API_Secret">API Secret</label>
+                                                        {{ form.API_Secret }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id_SubWebHook">Sub Web Hook</label>
+                                                {{ form.SubWebHook }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <input type="submit" value="Save" class="btn btn-primary">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

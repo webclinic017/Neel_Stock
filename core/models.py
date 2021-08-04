@@ -1,6 +1,8 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
-from .choices import VALIDITY_CHOICES, TRANS_CHOICES
+from .choices import VALIDITY_CHOICES, TRANS_CHOICES, BROKER_CHOICES
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
@@ -51,15 +53,30 @@ class Transaction(models.Model):
 
 
 class UserList(models.Model):
-    Creater = models.ForeignKey(User, on_delete=models.CASCADE, related_name='User_id')
+    Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='User_id')
 
-    Users = models.ManyToManyField(User)
+    Name = models.CharField(max_length=128, default=' ')                #
+    Broker = models.CharField(max_length=15, choices=BROKER_CHOICES)    #
+    UserId = models.CharField(max_length=128)                           #
+
+    Password = models.CharField(max_length=256)                         #
+    Email = models.EmailField()                                         #
+    Phone = PhoneNumberField()                                          #
+
+    Pin_2FA = models.CharField(max_length=128)                          #
+
+    API_Key = models.CharField(max_length=256)                          #
+    API_Secret = models.CharField(max_length=256)
+    SubWebHook = models.CharField(max_length=256)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
-        return f'{self.Creater} {self.Users.all().values("username")}'
+        return f'{self.Name}'
+
+    def delete_object(self):
+        return reverse('core:delete_userlist', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'User List'
@@ -68,14 +85,19 @@ class UserList(models.Model):
 
 class Bucket(models.Model):
     Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='User')
+    Users = models.ManyToManyField(UserList)
 
-    Users = models.ManyToManyField(User)
+    ActivateCopyTrade = models.BooleanField(default=False)
+    Multiplier = models.PositiveIntegerField(default=1)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True, editable=False, blank=True)
 
     def __str__(self):
-        return f'{self.Creator} {self.Users.all().values("username")}'
+        return f'{self.Creator} {self.Users.all()} {self.Multiplier}'
+
+    def delete_object(self):
+        return reverse('core:delete_bucket', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Bucket'
@@ -93,6 +115,31 @@ class WatchList(models.Model):
     def __str__(self):
         return f'{self.User} {self.Stock}'
 
+    def delete_object(self):
+        return reverse('core:delete_watchlist', args=[str(self.id)])
+
     class Meta:
         verbose_name = 'WatchList'
         verbose_name_plural = 'WatchLists'
+
+
+class Stock(models.Model):
+    token = models.CharField(max_length=20)
+    symbol = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+
+    expiry = models.CharField(max_length=30)
+    strike = models.CharField(max_length=30)
+    lotsize = models.CharField(max_length=30)
+
+    instrumenttype = models.CharField(max_length=30)
+    exch_seg = models.CharField(max_length=30)
+
+    tick_size = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Stock'
+        verbose_name_plural = 'Stock'

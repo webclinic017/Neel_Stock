@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load  static %}
+{% block content %}
+
+    <div class="app-content content">
+        <div class="content-wrapper">
+
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">User Buckets</h4>
+                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                <button data-toggle="modal" data-target="#addbucket"
+                                        class="float-right btn btn-round btn-glow btn-bg-gradient-x-purple-blue"
+                                        style="color: white">Create bucket <i
+                                        class="ft-plus-square " style="color: white"></i></button>
+                            </div>
+                            <div class="modal fade text-left" id="addbucket" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel33" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <label class="modal-title text-text-bold-600" id="myModalLabel33">
+                                                Add Bucket</label>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-content collapse show">
+                                            <div class="card-body">
+                                                <form method="post" class="form">
+                                                    {% csrf_token %}
+                                                    {% include 'form_errors.html' %}
+                                                    <div class="form-body">
+                                                        <h4 class="form-section">
+                                                            <i class="ft-list"></i> Create Bucket</h4>
+                                                        {{ form }}
+                                                    </div>
+
+                                                    <div class="form-actions">
+                                                        <input type="submit" value="Save" class="btn btn-primary">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body card-dashboard">
+                                    <p class="card-text">List of Users added by you.</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered zero-configuration">
+                                            <thead>
+                                            <tr>
+                                                <th>Users</th>
+                                                <th>Copy Trade</th>
+                                                <th>Multiplier</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for o in obj %}
+                                                <tr>
+                                                    <td>
+                                                        {% for Name in o.Users.all %}
+                                                            {{ Name }},
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>{{ o.ActivateCopyTrade }}</td>
+                                                    <td>{{ o.Multiplier }}</td>
+                                                    <td><a href="{% url 'core:update_bucket' o.pk %}"> <i class="ft-edit-3"></i></a></td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#delete{{ o.pk }}"><i
+                                                                class="ft-delete"></i></a>
+                                                    </td>
+                                                </tr>
+
+                                                <div class="modal fade text-left" id="delete{{ o.pk }}" tabindex="-1"
+                                                     role="dialog" aria-labelledby="basicModalLabel1"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="basicModalLabel1">Delete Bucket</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to delete this Bucket?
+                                                                    This action is irreversible!
+                                                                </p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn grey btn-secondary"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                                <a href="{% url 'core:delete_bucket' o.pk %}" class="btn btn-danger">Delete
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th>Users</th>
+                                                <th>Copy Trade</th>
+                                                <th>Multiplier</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+{% endblock %}

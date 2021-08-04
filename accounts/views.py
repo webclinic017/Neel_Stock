@@ -105,8 +105,10 @@ def change_password(request):  # change password for logged-in user
             user = form.save()
             update_session_auth_hash(request, user)  # converting password to hash
             message = 'Password changed successfully'
+            return redirect('core:home')
     else:
         form = PasswordChangeForm(request.user)
+
     return render(request, 'accounts/password/password_reset_confirm.html', {'form': form, 'message': message})
 
 

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # third party packages
     'verify_email.apps.VerifyEmailConfig',
     'phonenumber_field',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +81,14 @@ WSGI_APPLICATION = 'Neel_Stock.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'neel',
+        'USER': 'neel',
+        'PASSWORD': 'IVpC8@rt',
+        'HOST': 'localhost',
+        'POST': '',
     }
 }
 
@@ -141,3 +148,7 @@ DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
 
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
+
+CRONJOBS = [
+    ('0 0 * * *', 'core.cron.stock_update_job', '>>' + os.path.join(BASE_DIR, "cron_logs.txt")),
+]
