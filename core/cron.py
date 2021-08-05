@@ -13,7 +13,7 @@ def stock_update_job():
     for data in data:
         Stock.objects.create(
             token=data['token'], symbol=data['symbol'], name=data['name'],
-            expiry=data['expiry'], strike=data['strike'], lotsize=['lotsize'],
+            expiry=data['expiry'], strike=data['strike'], lotsize=data['lotsize'],
             instrumenttype=data['instrumenttype'], exch_seg=data['exch_seg'],
             tick_size=data['tick_size']
                              )

@@ -9,10 +9,49 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Users</h4>
+                                <h4 class="card-title">Watch List</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                                <a class="float-right btn btn-round btn-glow btn-bg-gradient-x-purple-blue"><i
-                                        class="ft-plus " style="color: white">Add User</i> </a>
+                                <button type="button" data-toggle="modal" data-target="#addstock"
+                                        class="float-right btn btn-round btn-glow btn-bg-gradient-x-purple-blue"
+                                        style="color: white">Add Stock <i
+                                        class="ft-plus-square" style="color: white"></i></button>
+                            </div>
+                            <div class="modal fade text-left" id="addstock" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel33" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <label class="modal-title text-text-bold-600" id="myModalLabel33">
+                                                Add Stock</label>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-content collapse show">
+                                            <div class="card-body">
+                                                <form method="post" class="form">
+                                                    {% csrf_token %}
+                                                    <div class="form-body">
+                                                        <h4 class="form-section">
+                                                            <i class="ft-book"></i> Add Stock</h4>
+                                                        <div class="form-group">
+                                                            <label for="default-select">Name</label>
+                                                            <select name="stock" id="default-select" class="select2 form-control">
+                                                                {% for obj in obj %}
+                                                                    <option value="{{ obj }}">{{ obj.exch_seg }}: {{ obj.name }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-actions">
+                                                        <input type="submit" value="Save" class="btn btn-primary">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body card-dashboard">

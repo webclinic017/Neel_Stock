@@ -1,6 +1,5 @@
 from django import forms
-from .models import UserList, Bucket, WatchList, Transaction
-from phonenumber_field.formfields import PhoneNumberField
+from .models import UserList, Bucket, WatchList, Transaction, Stock
 
 
 class UserForm(forms.ModelForm):
@@ -34,3 +33,36 @@ class BucketForm(forms.ModelForm):
             'ActivateCopyTrade': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'Multiplier': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        exclude = ('User', 'created_at', 'updated_at', 'Date')
+        widgets = {
+            'Stock': forms.TextInput(attrs={'class': 'form-control'}),
+            'Type': forms.Select(attrs={'class': 'form-control'}),
+            'Regular': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'CO': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'BO': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'AMO': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'InterDay': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'CNC': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'Margin': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'Market': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'Limit': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'Stop': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'StopLimit': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'ValidityDay': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'ValidityIOC': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'Price': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'LimitPrice': forms.NumberInput(attrs={'class': 'form-control'}),
+            'StopPrice': forms.NumberInput(attrs={'class': 'form-control'}),
+            'StopLoss': forms.NumberInput(attrs={'class': 'form-control'}),
+            'TakeProfit': forms.NumberInput(attrs={'class': 'form-control'}),
+            'TrailingStopLoss': forms.NumberInput(attrs={'class': 'form-control'}),
+            'Quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'DisclosedQuantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'Bucket': forms.Select(attrs={'class': 'form-control'}),
+        }
+

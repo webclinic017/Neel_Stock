@@ -4,8 +4,8 @@ VALIDITY_CHOICES = (
 )
 
 TRANS_CHOICES = (
-    ('Buy', 'BUY'),
-    ('SELL', 'SELL'),
+    ('BUY', 'Buy'),
+    ('SELL', 'Sell'),
 )
 
 BROKER_CHOICES = (
