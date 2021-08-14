@@ -1,6 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block main_menu %}
+
+    <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true"
+         data-img="{% static 'app-assets/images/backgrounds/02.jpg' %}">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'core:home' %}"><img
+                        class="brand-logo" alt="Chameleon admin logo"
+                        src="{% static 'app-assets/images/logo/logo.png' %}"/>
+                    <h3 class="brand-text">Dashboard</h3>
+                </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navigation-background"></div>
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                {% for watch in watch %}
+                    <li class="nav-item mr-auto" id="stok_ltp">
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+
 {% block content %}
 
     <!-- BEGIN: Content-->
@@ -13,341 +42,435 @@
             </div>
             <div class="content-body">
                 <!-- Revenue, Hit Rate & Deals -->
-                <div class="row">
-                    {#                    <div class="col-lg-5 col-md-5 col-sm-5">#}
-                    {#                        <div class="card">#}
-                    {#                            <div class="card-header">#}
-                    {#                                <h4 class="card-title">Project Revenue</h4>#}
-                    {#                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>#}
-                    {#                                <div class="heading-elements">#}
-                    {#                                    <ul class="list-inline mb-0">#}
-                    {#                                        <li>#}
-                    {#                                            <button type="button"#}
-                    {#                                                    class="btn btn-glow btn-round btn-bg-gradient-x-red-pink">More#}
-                    {#                                            </button>#}
-                    {#                                        </li>#}
-                    {#                                    </ul>#}
-                    {#                                </div>#}
-                    {#                            </div>#}
-                    {#                            <div class="card-content collapse show">#}
-                    {#                                <div class="card-body p-0 pb-0">#}
-                    {#                                    <div class="chartist">#}
-                    {#                                        <div id="project-stats" class="height-350 areaGradientShadow1"></div>#}
-                    {#                                    </div>#}
-                    {#                                </div>#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <!-- Scroll - horizontal and vertical table -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        {#                                        <div class="row">#}
-                                        {#                                            <div class="col-12">#}
-                                        {#                                                <div class="card">#}
-                                        {#                                                    <form method="get" action="{% url 'core:home' %}">#}
-                                        {#                                                        {% csrf_token %}#}
-                                        {#                                                        <input id="select-st" type="text" list="stonks">#}
-                                        {##}
-                                        {#                                                    </form>#}
-                                        {#                                                    <datalist id="stonks">#}
-                                        {#                                                        {% for stock in stocks %}#}
-                                        {#                                                            <option value="{{ stock }}">#}
-                                        {#                                                        {% endfor %}#}
-                                        {#                                                    </datalist>#}
-                                        {#                                                </div>#}
-                                        {#                                            </div>#}
-                                        {##}
-                                        {#                                        </div>#}
 
-                                        <a class="heading-elements-toggle"><i
-                                                class="la la-ellipsis-v font-medium-3"></i></a>
+
+                <!-- Basic form layout section start -->
+                <section id="basic-form-layouts">
+                    <div class="row match-height">
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Project Revenue</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li>
+                                                <button type="button"
+                                                        class="btn btn-glow btn-round btn-bg-gradient-x-red-pink">More
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="card-content collpase show">
-                                        <div class="card-body">
-                                            <div class="card-text">
-                                            </div>
-                                            <form method="post" class="form form-horizontal">
-                                                {% csrf_token %}
-                                                {% include 'form_errors.html' %}
-                                                <div class="form-body">
-                                                    <h4 class="form-section"><i class="la la-eye"></i> Employee Details
-                                                    </h4>
-                                                    <label for="select-st">Stock</label>
-                                                    <input type="text" name="Stock" id="id_Stock"
-                                                    list="stonks" class="form-control">
-{#                                                    {{ form.Stock }}#}
-                                                    <datalist id="stonks">
-                                                        {% for stock in stocks %}
-                                                            <option value="{{ stock }}">{{ stock.exch_seg }}: {{ stock.name }}</option>
-                                                        {% endfor %}
-                                                    </datalist>
-                                                    <label for="id_Type">Type</label>
-                                                    {{form.Type}}
-                                                    <label for="id_Bucket">Bucket</label>
-                                                    {{ form.Bucket }}
-
-                                                    <div class="row skin skin-flat">
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.Regular}}
-                                                                <label for="id_Regular">Regular</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.CO}}
-                                                                <label for="id_CO">CO</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.BO}}
-                                                                <label for="id_BO">BO</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.AMO}}
-                                                                <label for="id_AMO">AMO</label>
-                                                            </fieldset>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row skin skin-flat">
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.InterDay}}
-                                                                <label for="id_InterDay">InterDay</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.CNC}}
-                                                                <label for="id_CNC">CNC</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                {{form.Margin}}
-                                                                <label for="id_Margin">Margin</label>
-                                                            </fieldset>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-section"></div>
-                                                    <div class="row">
-                                                        <div class="skin skin-flat">
-                                                            <div class="col-3">
-                                                                <fieldset>
-                                                                    {{form.Market}}
-                                                                    <label for="Market">Market</label>
-                                                                </fieldset>
-                                                                <fieldset>
-                                                                    {{form.Limit}}
-                                                                    <label for="id_Limit">Limit</label>
-                                                                </fieldset>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <fieldset>
-                                                                <label for="id_LimitPrice">Limit Price</label>
-                                                                {{form.LimitPrice}}
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <fieldset>
-                                                                <label for="id_StopPrice">Stop Price</label>
-                                                                {{form.StopPrice}}
-                                                            </fieldset>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="skin skin-flat">
-                                                            <div class="col-3">
-                                                                <fieldset>
-                                                                    {{form.Stop}}
-                                                                    <label for="id_Stop">Stop</label>
-                                                                </fieldset>
-                                                                <fieldset>
-                                                                    {{form.StopLimit}}
-                                                                    <label for="id_StopLimit">Stop Limit</label>
-                                                                </fieldset>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                <label for="id_StopLoss">Stop Loss</label>
-                                                                {{form.StopLoss}}
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                <label for="id_TakeProfit">Take Profit</label>
-                                                                {{form.TakeProfit}}
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <fieldset>
-                                                                <label for="id_TrailingStopLoss">Trailing Stop
-                                                                    Loss</label>
-                                                                {{form.TrailingStopLoss}}
-                                                            </fieldset>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="skin skin-flat">
-                                                            <div class="col-4">
-                                                                <fieldset>
-                                                                    {{form.ValidityDay}}
-                                                                    <label for="id_ValidityDay">Day</label>
-                                                                </fieldset>
-                                                                <fieldset>
-                                                                    {{form.ValidityIOC}}
-                                                                    <label for="id_ValidityIOC">IOC</label>
-                                                                </fieldset>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <fieldset>
-                                                                {{form.Quantity}}
-                                                                <label for="id_Quantity">QTY.</label>
-                                                            </fieldset>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <fieldset>
-                                                                {{form.DisclosedQuantity}}
-                                                                <label for="id_DisclosedQuantity">Disclosed
-                                                                    QTY.</label>
-                                                            </fieldset>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-section"></div>
-                                            <input type="submit">
-                                            </form>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body p-0 pb-0">
+                                        <div class="chartist">
+                                            <div id="project-stats" class="height-350 areaGradientShadow1"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--/ Scroll - horizontal and vertical table -->
-                    </div>
-                </div>
-                <!--/ Revenue, Hit Rate & Deals -->
-                <!-- Emails Products & Avg Deals -->
-                <div class="row">
-                    <div class="col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header p-1">
-                                <h4 class="card-title float-left">Project X - <span
-                                        class="blue-grey lighten-2 font-small-3 mb-0">24 DEC 2017 - 09 APR 2019</span>
-                                </h4>
-                                <span class="badge badge-pill badge-info float-right m-0">Approved</span>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body card-dashboard">
-                                    <p class="card-text">DataTables has most features enabled by default, so all you
-                                        need to do to use it with your own ables is to call the construction function:
-                                        $().DataTable();.</p>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered zero-configuration">
-                                            <thead>
-                                            <tr>
-                                                <th>Stock</th>
-                                                <th>Bucket</th>
-                                                <th>Type</th>
-                                                <th>Regular</th>
-                                                <th>CO</th>
-                                                <th>BO</th>
-                                                <th>AMO</th>
-                                                <th>IntraDay</th>
-                                                <th>CNC</th>
-                                                <th>Margin</th>
-                                                <th>Market</th>
-                                                <th>Limit</th>
-                                                <th>Stop</th>
-                                                <th>Stop Limit</th>
-                                                <th>Validity Day</th>
-                                                <th>Validity IOC</th>
-                                                <th>Price</th>
-                                                <th>Limit Price</th>
-                                                <th>Stop Price</th>
-                                                <th>Stop Loss</th>
-                                                <th>Take Profit</th>
-                                                <th>Trailing Stop Loss</th>
-                                                <th>Quantity</th>
-                                                <th>Disclosed Quantity</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for trans in trans %}
-                                            <tr>
-                                                <td>{{ trans.Stock }}</td>
-                                                <td>{{ trans.Bucket }}</td>
-                                                <td>{{ trans.Type }}</td>
-                                                <td>{{ trans.Regular }}</td>
-                                                <td>{{ trans.CO }}</td>
-                                                <td>{{ trans.BO }}</td>
-                                                <td>{{ trans.AMO }}</td>
-                                                <td>{{ trans.InterDay }}</td>
-                                                <td>{{ trans.CNC }}</td>
-                                                <td>{{ trans.Margin }}</td>
-                                                <td>{{ trans.Market }}</td>
-                                                <td>{{ trans.Limit }}</td>
-                                                <td>{{ trans.Stop }}</td>
-                                                <td>{{ trans.StopLimit }}</td>
-                                                <td>{{ trans.ValidityDay }}</td>
-                                                <td>{{ trans.ValidityIOC }}</td>
-                                                <td>{{ trans.Price }}</td>
-                                                <td>{{ trans.LimitPrice }}</td>
-                                                <td>{{ trans.StopPrice }}</td>
-                                                <td>{{ trans.StopLoss }}</td>
-                                                <td>{{ trans.TakeProfit }}</td>
-                                                <td>{{ trans.TrailingStopLoss }}</td>
-                                                <td>{{ trans.Quantity }}</td>
-                                                <td>{{ trans.DisclosedQuantity }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <th>Stock</th>
-                                                <th>Bucket</th>
-                                                <th>Type</th>
-                                                <th>Regular</th>
-                                                <th>CO</th>
-                                                <th>BO</th>
-                                                <th>AMO</th>
-                                                <th>IntraDay</th>
-                                                <th>CNC</th>
-                                                <th>Margin</th>
-                                                <th>Market</th>
-                                                <th>Limit</th>
-                                                <th>Stop</th>
-                                                <th>Stop Limit</th>
-                                                <th>Validity Day</th>
-                                                <th>Validity IOC</th>
-                                                <th>Price</th>
-                                                <th>Limit Price</th>
-                                                <th>Stop Price</th>
-                                                <th>Stop Loss</th>
-                                                <th>Take Profit</th>
-                                                <th>Trailing Stop Loss</th>
-                                                <th>Quantity</th>
-                                                <th>Disclosed Quantity</th>
-                                            </tr>
-                                            </tfoot>
-                                        </table>
+                        <div class="col-md-7">
+                            <div class="card">
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <form class="form">
+                                            <div class="form-body">
+                                                <h4 class="form-section">
+                                                    <i class="ft-flag"></i>Transaction Form</h4>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div style="margin-left: 2%" class="row">
+                                                                <label for="companyinput5">Stock</label>
+                                                            </div>
+                                                            <select class="select2 form-control"
+                                                                    id="default-select">
+                                                                {% for stock in stocks %}
+                                                                    <option value="{{ stock.token }}">{{ stock.exch_seg }}:{{ stock.symbol }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="companyinput5">BUY / SELL</label>
+                                                            <select id="companyinput5" name="interested"
+                                                                    class="form-control">
+                                                                <option value="design">Buy</option>
+                                                                <option value="development">Sell</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="mb-2 mx-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input rew-1" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio1"
+                                                                   value="option1">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio1">Regular</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline mx-4">
+                                                            <input class="form-check-input rew-12" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio2"
+                                                                   value="option2">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio2">CO</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline mx-4">
+                                                            <input class="form-check-input rew-12" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio1"
+                                                                   value="option1">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio1">BO</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline mx-3">
+                                                            <input class="form-check-input rew-1" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio2"
+                                                                   value="option2">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio2">AWO</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mr-1">
+                                                    <div class="mb-2 mx-2">
+
+                                                        <div class="form-check form-check-inline ">
+                                                            <input class="form-check-input" type="radio"
+                                                                   name="inlineRadioOptions rew-2" id="inlineRadio1"
+                                                                   value="option1">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio1">Interday</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline mx-3">
+                                                            <input class="form-check-input rew-2" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio2"
+                                                                   value="option2">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio2">CNC</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline mx-4">
+                                                            <input class="form-check-input rew-2" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio1"
+                                                                   value="option1">
+                                                            <label class="form-check-label"
+                                                                   for="inlineRadio1">Margin</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div style="margin-left: -20px; margin-right: -20px"
+                                                     class="form-section"></div>
+                                                <div class="row mr-1">
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <div class="mb-2">
+                                                            <div class="row">
+                                                                <div class="form-check form-check-inline my-1">
+                                                                    <input class="form-check-input" type="radio"
+                                                                           name="inlineRadioOptions"
+                                                                           id="inlineRadio1"
+                                                                           value="option1">
+                                                                    <label class="form-check-label"
+                                                                           for="inlineRadio1">Markeet</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-check form-check-inline my-1">
+                                                                    <input class="form-check-input" type="radio"
+                                                                           name="inlineRadioOptions"
+                                                                           id="inlineRadio2"
+                                                                           value="option2">
+                                                                    <label class="form-check-label"
+                                                                           for="inlineRadio2">Limit</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-check form-check-inline my-1">
+                                                                    <input class="form-check-input" type="radio"
+                                                                           name="inlineRadioOptions"
+                                                                           id="inlineRadio1"
+                                                                           value="option1">
+                                                                    <label class="form-check-label"
+                                                                           for="inlineRadio1">Stop</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-check form-check-inline my-1">
+                                                                    <input class="form-check-input" type="radio"
+                                                                           name="inlineRadioOptions"
+                                                                           id="inlineRadio1"
+                                                                           value="option1">
+                                                                    <label class="form-check-label"
+                                                                           for="inlineRadio1">Stop
+                                                                        Limit</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="col-md-9 col-lg-9 col-xl-9">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Limit
+                                                                    Price</label>
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Limit Price">
+                                                                </fieldset>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Stop
+                                                                    Price</label>
+
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Stop Price">
+                                                                </fieldset>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="form-check form-check-inline my-2">
+                                                                    <input class="form-check-input" type="radio"
+                                                                           name="inlineRadioOptions"
+                                                                           id="inlineRadio1"
+                                                                           value="option1">
+                                                                    <label class="form-check-label"
+                                                                           for="inlineRadio1"><strong>Price</strong></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Stop
+                                                                    Loss
+                                                                </label>
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Limit Price">
+                                                                </fieldset>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Take
+                                                                    Profit</label>
+
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Stop Price">
+                                                                </fieldset>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       style="font-size: 12px"
+                                                                       for="inlineRadio1">Tailing Stop Loss
+                                                                </label>
+
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Stop Price">
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Quantity
+                                                                </label>
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Limit Price">
+                                                                </fieldset>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Discount
+                                                                    Quantity</label>
+
+                                                                <fieldset class="form-group">
+                                                                    <input type="text" id="squareText"
+                                                                           class="form-control square"
+                                                                           placeholder="Stop Price">
+                                                                </fieldset>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="mb-2">
+                                                            <div class="form-check form-check-inline mx-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="inlineRadioOptions"
+                                                                       id="inlineRadio1"
+                                                                       value="option1">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio1">Day</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="inlineRadioOptions"
+                                                                       id="inlineRadio2"
+                                                                       value="option2">
+                                                                <label class="form-check-label"
+                                                                       for="inlineRadio2">IOC</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button type="button" style="margin-left: 55%"
+                                                        class="btn btn-danger mr-1">
+                                                    <i class="ft-x"></i> Cancel
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="la la-check-square-o"></i> Buy
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+                <!-- // Basic form layout section end -->
 
             </div>
+
+
         </div>
+        <!--/ Revenue, Hit Rate & Deals -->
+        <!-- Emails Products & Avg Deals -->
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header p-1">
+                        <h4 class="card-title float-left">Project X - <span
+                                class="blue-grey lighten-2 font-small-3 mb-0">24 DEC 2017 - 09 APR 2019</span>
+                        </h4>
+                        <span class="badge badge-pill badge-info float-right m-0">Approved</span>
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body card-dashboard">
+                            <p class="card-text">DataTables has most features enabled by default, so all you
+                                need to do to use it with your own ables is to call the construction function:
+                                $().DataTable();.</p>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered zero-configuration">
+                                    <thead>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <th>Bucket</th>
+                                        <th>Type</th>
+                                        <th>Regular</th>
+                                        <th>CO</th>
+                                        <th>BO</th>
+                                        <th>AMO</th>
+                                        <th>IntraDay</th>
+                                        <th>CNC</th>
+                                        <th>Margin</th>
+                                        <th>Market</th>
+                                        <th>Limit</th>
+                                        <th>Stop</th>
+                                        <th>Stop Limit</th>
+                                        <th>Validity Day</th>
+                                        <th>Validity IOC</th>
+                                        <th>Price</th>
+                                        <th>Limit Price</th>
+                                        <th>Stop Price</th>
+                                        <th>Stop Loss</th>
+                                        <th>Take Profit</th>
+                                        <th>Trailing Stop Loss</th>
+                                        <th>Quantity</th>
+                                        <th>Disclosed Quantity</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for trans in trans %}
+                                        <tr>
+                                            <td>{{ trans.Stock }}</td>
+                                            <td>{{ trans.Bucket }}</td>
+                                            <td>{{ trans.Type }}</td>
+                                            <td>{{ trans.Regular }}</td>
+                                            <td>{{ trans.CO }}</td>
+                                            <td>{{ trans.BO }}</td>
+                                            <td>{{ trans.AMO }}</td>
+                                            <td>{{ trans.InterDay }}</td>
+                                            <td>{{ trans.CNC }}</td>
+                                            <td>{{ trans.Margin }}</td>
+                                            <td>{{ trans.Market }}</td>
+                                            <td>{{ trans.Limit }}</td>
+                                            <td>{{ trans.Stop }}</td>
+                                            <td>{{ trans.StopLimit }}</td>
+                                            <td>{{ trans.ValidityDay }}</td>
+                                            <td>{{ trans.ValidityIOC }}</td>
+                                            <td>{{ trans.Price }}</td>
+                                            <td>{{ trans.LimitPrice }}</td>
+                                            <td>{{ trans.StopPrice }}</td>
+                                            <td>{{ trans.StopLoss }}</td>
+                                            <td>{{ trans.TakeProfit }}</td>
+                                            <td>{{ trans.TrailingStopLoss }}</td>
+                                            <td>{{ trans.Quantity }}</td>
+                                            <td>{{ trans.DisclosedQuantity }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <th>Bucket</th>
+                                        <th>Type</th>
+                                        <th>Regular</th>
+                                        <th>CO</th>
+                                        <th>BO</th>
+                                        <th>AMO</th>
+                                        <th>IntraDay</th>
+                                        <th>CNC</th>
+                                        <th>Margin</th>
+                                        <th>Market</th>
+                                        <th>Limit</th>
+                                        <th>Stop</th>
+                                        <th>Stop Limit</th>
+                                        <th>Validity Day</th>
+                                        <th>Validity IOC</th>
+                                        <th>Price</th>
+                                        <th>Limit Price</th>
+                                        <th>Stop Price</th>
+                                        <th>Stop Loss</th>
+                                        <th>Take Profit</th>
+                                        <th>Trailing Stop Loss</th>
+                                        <th>Quantity</th>
+                                        <th>Disclosed Quantity</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
     </div>
     <!-- END: Content-->
 
@@ -360,19 +483,30 @@
 {% endblock %}
 
 {% block extrajs %}
-    {#    <script src="https://code.jquery.com/jquery-3.2.1.min.js">#}
-    {#        const $main = $('#select-st');#}
-    {#        const $fill = $('#fill-st');#}
-    {#        $main.on('key input'#}
-    {##}
-    {#        function func() {#}
-    {#            #}
-    {#        }#}
-    {##}
-    {#        func() {#}
-    {#            $fill.value = $main.value;#}
-    {#        }#}
-    {##}
-    {#        )#}
-    {#    </script>#}
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+			  crossorigin="anonymous">
+
+        function fetchdata() {
+            $.ajax({
+                url: '{% url 'core:get_ltp' %}',
+                type: 'get',
+                success: function (response) {
+                    response.each(function (i) {
+                        $('#stock_ltp').eq(i).attr('data-text', $(this).text());
+                        {#//or#}
+                        {#$('#stock_ltp').eq(i).data('text', $(this).text());#}
+                    });
+                },
+                complete: function (response) {
+                    setTimeout(fetchdata, 5000);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            setTimeout(fetchdata, 5000);
+        });
+
+    </script>
 {% endblock %}

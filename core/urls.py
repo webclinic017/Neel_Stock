@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, user_lists, user_buckets, watch_lists, delete_userlist, delete_bucket, delete_watchlist, update_userlist, update_bucket
+from .views import home, user_lists, user_buckets, watch_lists, delete_userlist, delete_bucket, delete_watchlist, update_userlist, update_bucket, get_ajax
 
 app_name = 'core'
 
@@ -18,4 +18,7 @@ urlpatterns = [
     path('delete_userlist/<int:pk>/', delete_userlist, name='delete_userlist'),
     path('delete_bucket/<int:pk>/', delete_bucket, name='delete_bucket'),
     path('delete_watchlist/<int:pk>/', delete_watchlist, name='delete_watchlist'),
+
+    # ltp view
+    path('ltp/', get_ajax, name='get_ltp'),
 ]
