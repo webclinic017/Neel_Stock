@@ -76,7 +76,8 @@
                             <div class="card">
                                 <div class="card-content collapse show">
                                     <div class="card-body">
-                                        <form class="form">
+                                        <form method="post" class="form">
+                                        {% csrf_token %}
                                             <div class="form-body">
                                                 <h4 class="form-section">
                                                     <i class="ft-flag"></i>Transaction Form</h4>
@@ -84,10 +85,10 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div style="margin-left: 2%" class="row">
-                                                                <label for="companyinput5">Stock</label>
+                                                                <label for="id_Stock">Stock</label>
                                                             </div>
                                                             <select class="select2 form-control"
-                                                                    id="default-select">
+                                                                    id="id_Stock" name="Stock">
                                                                 {% for stock in stocks %}
                                                                     <option value="{{ stock.token }}">{{ stock.exch_seg }}:{{ stock.symbol }}</option>
                                                                 {% endfor %}
@@ -96,11 +97,26 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="companyinput5">BUY / SELL</label>
-                                                            <select id="companyinput5" name="interested"
+                                                            <label for="id_Type">BUY / SELL</label>
+                                                            <select id="id_Type" name="Type"
                                                                     class="form-control">
-                                                                <option value="design">Buy</option>
-                                                                <option value="development">Sell</option>
+                                                                <option value="Buy">Buy</option>
+                                                                <option value="Sell">Sell</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="id_Bucket">
+                                                                Bucket
+                                                            </label>
+                                                            <select class="select2 form-control"
+                                                                    id="id_Bucket" name="Bucket" >
+                                                                {% for bucket in bucket %}
+                                                                    <option value="{{ bucket.id }}">{{ bucket }}</option>
+                                                                {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
@@ -109,32 +125,32 @@
                                                     <div class="mb-2 mx-2">
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input rew-1" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="option1">
+                                                                   name="ProductType" id="check_regular" value="Regular"
+                                                                   onchange="change_regular()">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio1">Regular</label>
+                                                                   for="check_regular">Regular</label>
                                                         </div>
                                                         <div class="form-check form-check-inline mx-4">
                                                             <input class="form-check-input rew-12" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio2"
-                                                                   value="option2">
+                                                                   name="ProductType" id="check_co" value="CO"
+                                                                   onchange="change_co()">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio2">CO</label>
+                                                                   for="check_co">CO</label>
                                                         </div>
 
                                                         <div class="form-check form-check-inline mx-4">
                                                             <input class="form-check-input rew-12" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="option1">
+                                                                   name="ProductType" id="check_bo" value="BO"
+                                                                   onchange="change_bo()">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio1">BO</label>
+                                                                   for="check_bo">BO</label>
                                                         </div>
                                                         <div class="form-check form-check-inline mx-3">
                                                             <input class="form-check-input rew-1" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio2"
-                                                                   value="option2">
+                                                                   name="ProductType" id="check_awo" value="AMO"
+                                                                   onchange="change_awo()">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio2">AWO</label>
+                                                                   for="check_awo">AMO</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -143,26 +159,25 @@
 
                                                         <div class="form-check form-check-inline ">
                                                             <input class="form-check-input" type="radio"
-                                                                   name="inlineRadioOptions rew-2" id="inlineRadio1"
-                                                                   value="option1">
+                                                                   name="AdvanceProductType" value="Intraday"
+                                                                   id="check_intraday">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio1">Interday</label>
+                                                                   for="check_intraday">Intraday</label>
                                                         </div>
 
                                                         <div class="form-check form-check-inline mx-3">
                                                             <input class="form-check-input rew-2" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio2"
-                                                                   value="option2">
+                                                                   name="AdvanceProductType" value="CNC" id="check_cnc">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio2">CNC</label>
+                                                                   for="check_cnc">CNC</label>
                                                         </div>
 
                                                         <div class="form-check form-check-inline mx-4">
                                                             <input class="form-check-input rew-2" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="option1">
+                                                                   name="AdvanceProductType" value="Margin"
+                                                                   id="check_margin">
                                                             <label class="form-check-label"
-                                                                   for="inlineRadio1">Margin</label>
+                                                                   for="check_margin">Margin</label>
                                                         </div>
 
                                                     </div>
@@ -175,41 +190,41 @@
                                                             <div class="row">
                                                                 <div class="form-check form-check-inline my-1">
                                                                     <input class="form-check-input" type="radio"
-                                                                           name="inlineRadioOptions"
-                                                                           id="inlineRadio1"
-                                                                           value="option1">
+                                                                           name="OrderType"
+                                                                           id="check_market" value="Market"
+                                                                           onchange="change_market()">
                                                                     <label class="form-check-label"
-                                                                           for="inlineRadio1">Markeet</label>
+                                                                           for="check_market">Market</label>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="form-check form-check-inline my-1">
                                                                     <input class="form-check-input" type="radio"
-                                                                           name="inlineRadioOptions"
-                                                                           id="inlineRadio2"
-                                                                           value="option2">
+                                                                           name="OrderType"
+                                                                           id="check_limit" value="Limit"
+                                                                           onchange="change_limit()">
                                                                     <label class="form-check-label"
-                                                                           for="inlineRadio2">Limit</label>
+                                                                           for="check_limit">Limit</label>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="form-check form-check-inline my-1">
                                                                     <input class="form-check-input" type="radio"
-                                                                           name="inlineRadioOptions"
-                                                                           id="inlineRadio1"
-                                                                           value="option1">
+                                                                           name="OrderType"
+                                                                           id="check_stop" value="Stop"
+                                                                           onchange="change_stop()">
                                                                     <label class="form-check-label"
-                                                                           for="inlineRadio1">Stop</label>
+                                                                           for="check_stop">Stop</label>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="form-check form-check-inline my-1">
                                                                     <input class="form-check-input" type="radio"
-                                                                           name="inlineRadioOptions"
-                                                                           id="inlineRadio1"
-                                                                           value="option1">
+                                                                           name="OrderType"
+                                                                           id="check_stop_limit" value="Stop Limit"
+                                                                           onchange="change_stop_limit()">
                                                                     <label class="form-check-label"
-                                                                           for="inlineRadio1">Stop
+                                                                           for="check_stop_limit">Stop
                                                                         Limit</label>
                                                                 </div>
                                                             </div>
@@ -221,92 +236,94 @@
                                                         <div class="row">
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Limit
+                                                                       for="input_limit_price">Limit
                                                                     Price</label>
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_limit_price"
                                                                            class="form-control square"
                                                                            placeholder="Limit Price">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Stop
+                                                                       for="input_stop_price">Stop
                                                                     Price</label>
 
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_stop_price"
                                                                            class="form-control square"
-                                                                           placeholder="Stop Price">
+                                                                           placeholder="Stop Price" name="StopPrice">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col">
                                                                 <div class="form-check form-check-inline my-2">
                                                                     <input class="form-check-input" type="radio"
-                                                                           name="inlineRadioOptions"
-                                                                           id="inlineRadio1"
-                                                                           value="option1">
+                                                                           name="Price"
+                                                                           id="check_price">
                                                                     <label class="form-check-label"
-                                                                           for="inlineRadio1"><strong>Price</strong></label>
+                                                                           for="check_price"><strong>Price</strong></label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Stop
+                                                                       for="input_stop_loss">Stop
                                                                     Loss
                                                                 </label>
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_stop_loss"
                                                                            class="form-control square"
-                                                                           placeholder="Limit Price">
+                                                                           placeholder="Limit Price" name="StopLoss">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Take
-                                                                    Profit</label>
+                                                                       for="input_take_profit">Take
+                                                                    Profit
+                                                                </label>
 
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_take_profit"
                                                                            class="form-control square"
-                                                                           placeholder="Stop Price">
+                                                                           placeholder="Stop Price" name="TakeProfit">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col">
                                                                 <label class="form-check-label"
                                                                        style="font-size: 12px"
-                                                                       for="inlineRadio1">Tailing Stop Loss
+                                                                       for="input_trailing_stop_loss">Trailing Stop Loss
                                                                 </label>
 
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_trailing_stop_loss"
                                                                            class="form-control square"
-                                                                           placeholder="Stop Price">
+                                                                           placeholder="Stop Price"
+                                                                           name="TrailingStopLoss">
                                                                 </fieldset>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Quantity
+                                                                       for="input_quantity">Quantity
                                                                 </label>
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_quantity"
                                                                            class="form-control square"
-                                                                           placeholder="Limit Price">
+                                                                           placeholder="Limit Price" name="Quantity">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Discount
+                                                                       for="input_disclosed_quantity">Disclosed
                                                                     Quantity</label>
 
                                                                 <fieldset class="form-group">
-                                                                    <input type="text" id="squareText"
+                                                                    <input type="text" id="input_disclosed_quantity"
                                                                            class="form-control square"
-                                                                           placeholder="Stop Price">
+                                                                           placeholder="Stop Price"
+                                                                           name="DisclosedQuantity">
                                                                 </fieldset>
                                                             </div>
 
@@ -317,32 +334,24 @@
                                                         <div class="mb-2">
                                                             <div class="form-check form-check-inline mx-2">
                                                                 <input class="form-check-input" type="radio"
-                                                                       name="inlineRadioOptions"
-                                                                       id="inlineRadio1"
-                                                                       value="option1">
+                                                                       name="Validity"
+                                                                       id="check_day" value="Day">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio1">Day</label>
+                                                                       for="check_day">Day</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                       name="inlineRadioOptions"
-                                                                       id="inlineRadio2"
-                                                                       value="option2">
+                                                                       name="Validity"
+                                                                       id="check_ioc" value="IOC">
                                                                 <label class="form-check-label"
-                                                                       for="inlineRadio2">IOC</label>
+                                                                       for="check_ioc">IOC</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-actions">
-                                                <button type="button" style="margin-left: 55%"
-                                                        class="btn btn-danger mr-1">
-                                                    <i class="ft-x"></i> Cancel
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="la la-check-square-o"></i> Buy
-                                                </button>
+                                                <input type="submit" value="Submit" class="btn btn-primary">
                                             </div>
                                         </form>
                                     </div>
@@ -380,19 +389,10 @@
                                         <th>Stock</th>
                                         <th>Bucket</th>
                                         <th>Type</th>
-                                        <th>Regular</th>
-                                        <th>CO</th>
-                                        <th>BO</th>
-                                        <th>AMO</th>
-                                        <th>IntraDay</th>
-                                        <th>CNC</th>
-                                        <th>Margin</th>
-                                        <th>Market</th>
-                                        <th>Limit</th>
-                                        <th>Stop</th>
-                                        <th>Stop Limit</th>
-                                        <th>Validity Day</th>
-                                        <th>Validity IOC</th>
+                                        <th>Product Type</th>
+                                        <th>Advance Product type</th>
+                                        <th>Order Type</th>
+                                        <th>Validity</th>
                                         <th>Price</th>
                                         <th>Limit Price</th>
                                         <th>Stop Price</th>
@@ -408,20 +408,10 @@
                                         <tr>
                                             <td>{{ trans.Stock }}</td>
                                             <td>{{ trans.Bucket }}</td>
-                                            <td>{{ trans.Type }}</td>
-                                            <td>{{ trans.Regular }}</td>
-                                            <td>{{ trans.CO }}</td>
-                                            <td>{{ trans.BO }}</td>
-                                            <td>{{ trans.AMO }}</td>
-                                            <td>{{ trans.InterDay }}</td>
-                                            <td>{{ trans.CNC }}</td>
-                                            <td>{{ trans.Margin }}</td>
-                                            <td>{{ trans.Market }}</td>
-                                            <td>{{ trans.Limit }}</td>
-                                            <td>{{ trans.Stop }}</td>
-                                            <td>{{ trans.StopLimit }}</td>
-                                            <td>{{ trans.ValidityDay }}</td>
-                                            <td>{{ trans.ValidityIOC }}</td>
+                                            <td>{{ trans.ProductType }}</td>
+                                            <td>{{ trans.AdvanceProductType }}</td>
+                                            <td>{{ trans.OrderType }}</td>
+                                            <td>{{ trans.Validity }}</td>
                                             <td>{{ trans.Price }}</td>
                                             <td>{{ trans.LimitPrice }}</td>
                                             <td>{{ trans.StopPrice }}</td>
@@ -433,34 +423,6 @@
                                         </tr>
                                     {% endfor %}
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Stock</th>
-                                        <th>Bucket</th>
-                                        <th>Type</th>
-                                        <th>Regular</th>
-                                        <th>CO</th>
-                                        <th>BO</th>
-                                        <th>AMO</th>
-                                        <th>IntraDay</th>
-                                        <th>CNC</th>
-                                        <th>Margin</th>
-                                        <th>Market</th>
-                                        <th>Limit</th>
-                                        <th>Stop</th>
-                                        <th>Stop Limit</th>
-                                        <th>Validity Day</th>
-                                        <th>Validity IOC</th>
-                                        <th>Price</th>
-                                        <th>Limit Price</th>
-                                        <th>Stop Price</th>
-                                        <th>Stop Loss</th>
-                                        <th>Take Profit</th>
-                                        <th>Trailing Stop Loss</th>
-                                        <th>Quantity</th>
-                                        <th>Disclosed Quantity</th>
-                                    </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -484,19 +446,21 @@
 
 {% block extrajs %}
     <script src="https://code.jquery.com/jquery-3.6.0.js"
-			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-			  crossorigin="anonymous">
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
 
+    <script>
         function fetchdata() {
             $.ajax({
                 url: '{% url 'core:get_ltp' %}',
                 type: 'get',
                 success: function (response) {
-                    response.each(function (i) {
-                        $('#stock_ltp').eq(i).attr('data-text', $(this).text());
-                        {#//or#}
-                        {#$('#stock_ltp').eq(i).data('text', $(this).text());#}
-                    });
+                    console.log(response.ltp.length);
+                    console.log(response.length);
+                    for (var i = 0; i < response.ltp.length; i++) {
+                        console.log(response.ltp[i]);
+                    }
                 },
                 complete: function (response) {
                     setTimeout(fetchdata, 5000);
@@ -507,6 +471,375 @@
         $(document).ready(function () {
             setTimeout(fetchdata, 5000);
         });
+
+    </script>
+
+    <script>
+        function change_regular() {
+            if ($("#check_regular").is(':checked')) {
+                if ($("#check_intraday").is(":disabled")) {
+                    $("#check_intraday").removeAttr("disabled");
+                }
+                if ($("#check_cnc").is(":disabled")) {
+                    $("#check_cnc").removeAttr("disabled");
+                }
+                if ($("#check_margin").is(":disabled")) {
+                    $("#check_margin").removeAttr("disabled");
+                }
+                if ($("#check_day").is(":disabled")) {
+                    $("#check_day").removeAttr("disabled");
+                }
+                if ($("#check_ioc").is(":disabled")) {
+                    $("#check_ioc").removeAttr("disabled");
+                }
+
+                if ($("#check_disclosed_quantity").is(":disabled")) {
+                    $("#check_disclosed_quantity").removeAttr("disabled");
+                }
+                $('#check_day').attr('checked', true);
+                $('#check_intraday').attr('checked', true);
+                $('#check_market').attr('checked', true);
+                $('#check_price').attr('checked', true);
+
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+
+            }
+            if ($("#check_market").is(':checked')) {
+                change_market();
+            }
+            if ($("#check_limit").is(':checked')) {
+                change_limit();
+            }
+            if ($("#check_stop").is(':checked')) {
+                change_stop();
+            }
+            if ($("#check_stop_limit").is(':checked')) {
+                change_stop_limit();
+            }
+
+        }
+
+        function change_co() {
+            if ($("#check_co").is(':checked')) {
+                $('#check_intraday').attr('disabled', true).attr('checked', false);
+                $('#check_cnc').attr('disabled', true).attr('checked', false);
+                $('#check_margin').attr('disabled', true).attr('checked', false);
+                $('#check_market').attr('checked', true);
+                $('#check_day').attr('disabled', true).attr('checked', false);
+                $('#check_ioc').attr('disabled', true).attr('checked', false);
+                $('#check_price').attr('checked', true);
+
+
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+            }
+            if ($("#check_market").is(':checked')) {
+                change_market();
+            }
+            if ($("#check_limit").is(':checked')) {
+                change_limit();
+            }
+            if ($("#check_stop").is(':checked')) {
+                change_stop();
+            }
+            if ($("#check_stop_limit").is(':checked')) {
+                change_stop_limit();
+            }
+        }
+
+        function change_bo() {
+            if ($("#check_bo").is(':checked')) {
+                $('#check_intraday').attr('disabled', true).attr('checked', false);
+                $('#check_cnc').attr('disabled', true).attr('checked', false);
+                $('#check_margin').attr('disabled', true).attr('checked', false);
+                $('#check_market').attr('checked', true);
+                $('#check_day').attr('disabled', true).attr('checked', false);
+                $('#check_ioc').attr('disabled', true).attr('checked', false);
+                $('#check_price').attr('checked', true);
+
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_take_profit").is(":disabled")) {
+                    $("#input_take_profit").removeAttr("disabled").val('');
+                }
+
+            }
+            if ($("#check_market").is(':checked')) {
+                change_market();
+            }
+            if ($("#check_limit").is(':checked')) {
+                change_limit();
+            }
+            if ($("#check_stop").is(':checked')) {
+                change_stop();
+            }
+            if ($("#check_stop_limit").is(':checked')) {
+                change_stop_limit();
+            }
+        }
+
+        function change_awo() {
+            if ($("#check_awo").is(':checked')) {
+                if ($("#check_intraday").is(":disabled")) {
+                    $("#check_intraday").removeAttr("disabled");
+                }
+                if ($("#check_cnc").is(":disabled")) {
+                    $("#check_cnc").removeAttr("disabled");
+                }
+                if ($("#check_margin").is(":disabled")) {
+                    $("#check_margin").removeAttr("disabled");
+                }
+                if ($("#check_day").is(":disabled")) {
+                    $("#check_day").removeAttr("disabled");
+                }
+                if ($("#check_ioc").is(":disabled")) {
+                    $("#check_ioc").removeAttr("disabled");
+                }
+                $('#check_intraday').attr('checked', true);
+                $('#check_day').attr('checked', true);
+                $('#check_market').attr('checked', true);
+                $('#check_price').attr('checked', true);
+
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+            if ($("#check_market").is(':checked')) {
+                change_market();
+            }
+            if ($("#check_limit").is(':checked')) {
+                change_limit();
+            }
+            if ($("#check_stop").is(':checked')) {
+                change_stop();
+            }
+            if ($("#check_stop_limit").is(':checked')) {
+                change_stop_limit();
+            }
+        }
+
+        function change_market() {
+            if ($("#check_regular").is(':checked')) {
+                if ($("#input_quantity").is(":disabled")) {
+                    $("#input_quantity").removeAttr("disabled");
+                }
+                if ($("#input_disclosed_quantity").is(":disabled")) {
+                    $("#input_disclosed_quantity").removeAttr("disabled");
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_co").is(':checked')) {
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_quantity").is(":disabled")) {
+                    $("#input_quantity").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_bo").is(':checked')) {
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_take_profit").is(":disabled")) {
+                    $("#input_take_profit").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+            if ($("#check_awo").is(':checked')) {
+                if ($("#input_quantity").is(":disabled")) {
+                    $("#input_quantity").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+        }
+
+        function change_limit() {
+            if ($("#check_limit").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_co").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_bo").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_take_profit").is(":disabled")) {
+                    $("#input_take_profit").removeAttr("disabled").val('');
+                }
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+            if ($("#check_awo").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                $('#input_stop_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+
+        }
+
+        function change_stop() {
+            if ($("#check_stop").is(':checked')) {
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_co").is(':checked')) {
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_bo").is(':checked')) {
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_take_profit").is(":disabled")) {
+                    $("#input_take_profit").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true);
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+            if ($("#check_awo").is(':checked')) {
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                $('#input_limit_price').attr('disabled', true).val('');
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+        }
+
+        function change_stop_limit() {
+            if ($("#check_stop_limit").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                $('#input_stop_loss').attr('disabled', true);
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_co").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                $('#input_take_profit').attr('disabled', true);
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+            }
+            if ($("#check_bo").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_loss").is(":disabled")) {
+                    $("#input_stop_loss").removeAttr("disabled").val('');
+                }
+                if ($("#input_take_profit").is(":disabled")) {
+                    $("#input_take_profit").removeAttr("disabled").val('');
+                }
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+            if ($("#check_awo").is(':checked')) {
+                if ($("#input_limit_price").is(":disabled")) {
+                    $("#input_limit_price").removeAttr("disabled").val('');
+                }
+                if ($("#input_stop_price").is(":disabled")) {
+                    $("#input_stop_price").removeAttr("disabled").val('');
+                }
+                $('#input_stop_loss').attr('disabled', true).val('');
+                $('#input_take_profit').attr('disabled', true).val('');
+                $('#input_trailing_stop_loss').attr('disabled', true).val('');
+                $('#input_disclosed_quantity').attr('disabled', true).val('');
+            }
+        }
 
     </script>
 {% endblock %}

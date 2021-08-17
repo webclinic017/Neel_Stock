@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, user_lists, user_buckets, watch_lists, delete_userlist, delete_bucket, delete_watchlist, update_userlist, update_bucket, get_ajax
+from .views import user_lists, watch_lists, delete_userlist, delete_watchlist, update_userlist,get_ajax, home, user_buckets, update_bucket, delete_bucket
 
 app_name = 'core'
 

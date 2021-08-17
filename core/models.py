@@ -1,49 +1,18 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .choices import VALIDITY_CHOICES, TRANS_CHOICES, BROKER_CHOICES
+from .choices import VALIDITY_CHOICES, TRANS_CHOICES, BROKER_CHOICES, PRODUCT_TYPE_CHOICES, ADV_PRODUCT_TYPE, ORDER_TYPE_CHOICES
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
 
-class UserList(models.Model):
-    Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='User_id')
-
-    Name = models.CharField(max_length=128, default=' ')  #
-    Broker = models.CharField(max_length=15, choices=BROKER_CHOICES)  #
-    UserId = models.CharField(max_length=128)  #
-
-    Password = models.CharField(max_length=256)  #
-    Email = models.EmailField()  #
-    Phone = PhoneNumberField()  #
-
-    Pin_2FA = models.CharField(max_length=128)  #
-
-    API_Key = models.CharField(max_length=256)  #
-    API_Secret = models.CharField(max_length=256)
-    SubWebHook = models.CharField(max_length=256)
-
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
-
-    def __str__(self):
-        return f'{self.Name}'
-
-    def delete_object(self):
-        return reverse('core:delete_userlist', args=[str(self.id)])
-
-    class Meta:
-        verbose_name = 'User List'
-        verbose_name_plural = 'User Lists'
-
 
 class Bucket(models.Model):
-    Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='User')
-    Users = models.ManyToManyField(UserList)
+    Creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Bucket_Creator')
+    Users = models.ManyToManyField(User, through='Multiplier')
 
     ActivateCopyTrade = models.BooleanField(default=False)
-    Multiplier = models.PositiveIntegerField(default=1)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False, blank=True)
     updated_at = models.DateTimeField(auto_now=True, editable=False, blank=True)
@@ -52,8 +21,8 @@ class Bucket(models.Model):
         users_query = self.Users.all()
         users_str = ''
         for user in users_query:
-            users_str = users_str + user.Name + ', '
-        return f'{self.Creator} / {users_str} / {self.Multiplier}'
+            users_str = users_str + user.username + ', '
+        return f'{self.Creator} / {users_str} '
 
     def delete_object(self):
         return reverse('core:delete_bucket', args=[str(self.id)])
@@ -61,6 +30,13 @@ class Bucket(models.Model):
     class Meta:
         verbose_name = 'Bucket'
         verbose_name_plural = 'Buckets'
+
+
+class Multiplier(models.Model):
+    Bucket = models.ForeignKey(Bucket, on_delete=models.CASCADE)
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    multiplier = models.PositiveIntegerField(default=1)
 
 
 class Transaction(models.Model):
@@ -72,21 +48,13 @@ class Transaction(models.Model):
 
     Type = models.CharField(max_length=4, choices=TRANS_CHOICES)
 
-    Regular = models.BooleanField(default=False, null=True, blank=True)
-    CO = models.BooleanField(default=False, null=True, blank=True)
-    BO = models.BooleanField(default=False, null=True, blank=True)
-    AMO = models.BooleanField(default=False, null=True, blank=True)
-    InterDay = models.BooleanField(default=False, null=True, blank=True)
-    CNC = models.BooleanField(default=False, null=True, blank=True)
-    Margin = models.BooleanField(default=False, null=True, blank=True)
+    ProductType = models.CharField(max_length=7, choices=PRODUCT_TYPE_CHOICES, default='Regular')
 
-    Market = models.BooleanField(default=False, null=True, blank=True)
-    Limit = models.BooleanField(default=False, null=True, blank=True)
-    Stop = models.BooleanField(default=False, null=True, blank=True)
-    StopLimit = models.BooleanField(default=False, null=True, blank=True)
+    AdvanceProductType = models.CharField(max_length=8, choices=ADV_PRODUCT_TYPE, default='Intraday')
 
-    ValidityDay = models.BooleanField(default=False, null=True, blank=True)
-    ValidityIOC = models.BooleanField(default=False, null=True, blank=True)
+    OrderType = models.CharField(max_length=10, choices=ORDER_TYPE_CHOICES, default='Market')
+
+    Validity = models.CharField(max_length=3, choices=VALIDITY_CHOICES, default='Day')
 
     Price = models.BooleanField(default=True)
 
@@ -122,7 +90,7 @@ class WatchList(models.Model):
     updated_at = models.DateTimeField(auto_now=True, editable=False, blank=True)
 
     def __str__(self):
-        return f'{self.User} {self.Stock}'
+        return f'{self.User} {self.Stocktoken}'
 
     def delete_object(self):
         return reverse('core:delete_watchlist', args=[str(self.id)])

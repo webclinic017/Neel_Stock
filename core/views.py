@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import UpdateView
 from django.utils import timezone
 from datetime import datetime
@@ -9,6 +9,9 @@ from django.core import serializers
 import json
 from .models import *
 from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.helper import SuperUserCheck, AccountManagerCheck
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .helper import get_ltp_data
 
@@ -17,6 +20,7 @@ from .helper import get_ltp_data
 def home(request):
     obj = Stock.objects.all()
     trans = Transaction.objects.filter(User=request.user)
+    bucket = Bucket.objects.filter(Creator=request.user)
 
     watch = WatchList.objects.filter(User=request.user)
     token_list = []
@@ -28,6 +32,7 @@ def home(request):
 
     if request.method == 'POST':
         form = TransactionForm(request.POST)
+        print(form)
         if form.is_valid():
             inst = form.save(commit=False)
             inst.User = request.user
@@ -36,20 +41,27 @@ def home(request):
     else:
         form = TransactionForm
 
-    return render(request, 'core/home.html', {'stocks': obj, 'form': form, 'trans': trans, 'watch': watch_stock})
+    context = {
+        'stocks': obj,
+        'form': form,
+        'trans': trans,
+        'watch': watch_stock,
+        'bucket': bucket,
+    }
+
+    return render(request, 'core/home.html', context)
 
 
-@login_required(login_url='accounts:login')
+@login_required()
+@user_passes_test(lambda u: u.is_superuser or u.profile.account_manager)
 def user_lists(request):
-    obj = UserList.objects.filter(Creator=request.user)
+    obj = User.objects.all()
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user_inst = form.save(commit=False)
-            user_inst.Creator = request.user
-            user_inst.save()
+            form.save()
     else:
-        form = UserForm
+        form = UserCreationForm
 
     context = {
         'obj': obj,
@@ -59,20 +71,22 @@ def user_lists(request):
     return render(request, 'core/user_lists.html', context)
 
 
-class update_userlist(UpdateView):
-    form_class = UserForm
-    model = UserList
+class update_userlist(UpdateView, SuperUserCheck, AccountManagerCheck, LoginRequiredMixin):
+    form_class = UserChangeForm
+    model = User
     template_name = 'core/update_user.html'
     success_url = reverse_lazy('core:user_lists')
 
 
-@login_required(login_url='accounts:login')
+@login_required()
+@user_passes_test(lambda u: u.is_superuser or u.profile.account_manager)
 def delete_userlist(request, pk):
-    UserList.objects.get(id=pk).delete()
+    User.objects.get(id=pk).delete()
     return redirect('core:user_lists')
 
 
-@login_required(login_url='accounts:login')
+@login_required()
+@user_passes_test(lambda u: u.is_superuser or u.profile.account_manager)
 def user_buckets(request):
     obj = Bucket.objects.filter(Creator=request.user)
     if request.method == 'POST':
@@ -93,14 +107,15 @@ def user_buckets(request):
     return render(request, 'core/user_buckets.html', context)
 
 
-class update_bucket(UpdateView):
+class update_bucket(UpdateView, SuperUserCheck, AccountManagerCheck, LoginRequiredMixin):
     form_class = BucketForm
     model = Bucket
     template_name = 'core/update_bucket.html'
     success_url = reverse_lazy('core:user_buckets')
 
 
-@login_required(login_url='accounts:login')
+@login_required()
+@user_passes_test(lambda u: u.is_superuser or u.profile.account_manager)
 def delete_bucket(request, pk):
     Bucket.objects.get(id=pk).delete()
     return redirect('core:user_buckets')
@@ -151,7 +166,7 @@ def get_ajax(request):
             ltp.append(get_ltp_data(w))
 
         # instance = serializers.serialize('json', [watch_stock, ])
-        print(ltp)
-        instance = json.dumps(ltp)
+        # print(ltp)
+        # instance = json.dumps(ltp)
 
-        return JsonResponse({'ltp': instance}, status=200)
+        return JsonResponse({'ltp': ltp}, status=200)
