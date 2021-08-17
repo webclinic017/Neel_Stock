@@ -81,14 +81,14 @@ WSGI_APPLICATION = 'Neel_Stock.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'neel',
-        'USER': 'neel',
-        'PASSWORD': 'IVpC8@rt',
-        'HOST': 'localhost',
-        'POST': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'neel',
+        # 'USER': 'neel',
+        # 'PASSWORD': 'IVpC8@rt',
+        # 'HOST': 'localhost',
+        # 'POST': '',
     }
 }
 

@@ -29,7 +29,7 @@ def home(request):
         token_list.append(w.Stocktoken)
 
     watch_stock = Stock.objects.filter(token__in=token_list)
-
+    print("hekjfbwekjf------",watch_stock)
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         print(form)
@@ -166,7 +166,7 @@ def get_ajax(request):
             ltp.append(get_ltp_data(w))
 
         # instance = serializers.serialize('json', [watch_stock, ])
-        # print(ltp)
+        print(ltp)
         # instance = json.dumps(ltp)
 
         return JsonResponse({'ltp': ltp}, status=200)

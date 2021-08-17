@@ -18,9 +18,11 @@
         <div class="navigation-background"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                <h4 style="margin-left: 5px"> Watch List</h4>
                 {% for watch in watch %}
-                    <li class="nav-item mr-auto" id="stok_ltp">
-
+                    <li style="margin-left: 5px" class="nav-item mr-auto">
+                        <span>{{ watch.exch_seg }}:{{ watch.token }} - {{ watch.symbol }} </span> <span
+                            id="ltp{{ forloop.counter }}"></span>
                     </li>
                 {% endfor %}
             </ul>
@@ -77,7 +79,7 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <form method="post" class="form">
-                                        {% csrf_token %}
+                                            {% csrf_token %}
                                             <div class="form-body">
                                                 <h4 class="form-section">
                                                     <i class="ft-flag"></i>Transaction Form</h4>
@@ -89,12 +91,26 @@
                                                             </div>
                                                             <select class="select2 form-control"
                                                                     id="id_Stock" name="Stock">
+                                                                <option value="0" selected>------</option>
                                                                 {% for stock in stocks %}
                                                                     <option value="{{ stock.token }}">{{ stock.exch_seg }}:{{ stock.symbol }}</option>
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="id_Watch">Stock from Watch List</label>
+                                                            <select id="id_Watch" name="Type"
+                                                                    class="form-control">
+                                                                {% for watch in watch %}
+                                                                    <option value="{{ watch.id }}">{{ watch.exch_seg }}:{{ watch.symbol }} </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="id_Type">BUY / SELL</label>
@@ -105,15 +121,13 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
+                                                    <div class="col-6">
                                                         <div class="form-group">
                                                             <label for="id_Bucket">
                                                                 Bucket
                                                             </label>
                                                             <select class="select2 form-control"
-                                                                    id="id_Bucket" name="Bucket" >
+                                                                    id="id_Bucket" name="Bucket">
                                                                 {% for bucket in bucket %}
                                                                     <option value="{{ bucket.id }}">{{ bucket }}</option>
                                                                 {% endfor %}
@@ -459,7 +473,9 @@
                     console.log(response.ltp.length);
                     console.log(response.length);
                     for (var i = 0; i < response.ltp.length; i++) {
-                        console.log(response.ltp[i]);
+                        console.log(response.ltp[i]["exchange"]);
+                        var ltpp = response.ltp[i]["ltp"]
+                        document.getElementById("ltp" + [i + 1]).innerHTML = "- " + ltpp
                     }
                 },
                 complete: function (response) {
